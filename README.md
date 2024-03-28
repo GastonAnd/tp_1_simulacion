@@ -1,1 +1,7 @@
-# tp_1_simulacion
+# TP 1 SIMULACION
+
+# Instalar dependencias
+
+pip install matplotlib
+
+pip install numpy
