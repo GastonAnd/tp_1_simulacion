@@ -6,7 +6,7 @@ pip install matplotlib
 
 pip install numpy
 
-#Como ejecutar
+# Como ejecutar
 
 python ruleta.py cantidad_corridas cantidad_tiradas numero_elegido
 
