@@ -11,7 +11,11 @@ def tirar_ruleta():
 # Lista para almacenar los resultados de las corridas
 resultados_corridas = []
 num_ruleta=np.arange(37)
-promedio_esperado=np.mean(num_ruleta)
+promedio_esperado= np.mean(num_ruleta)
+varianza_esperada = np.var(num_ruleta)
+desvio_esperado = np.std(num_ruleta)
+
+
 # Realizar  corridas
 for i in range(num_corridas):
     frec_absol_elegido = []
