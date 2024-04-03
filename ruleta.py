@@ -33,16 +33,16 @@ for i in range(num_corridas):
             
          ### CALCULOS ### 
         vpn.append(np.mean(resultados_corrida[:j+1]))
-        desvio_estandar[j]=np.std(resultado_num_elegido[:j+1])   
-        varianza[j]=np.var(resultado_num_elegido[:j+1])
+        desvio_estandar[j]=np.std(resultados_corrida[:j+1])   
+        varianza[j]=np.var(resultados_corrida[:j+1])
         
     frec_relativa = [sum(resultado_num_elegido[:i+1]) / (i+1) for i in range(num_valores)]
 
     promedio_estimado=suma_resultado/num_valores
     
-    desvio_estimado=np.std(resultado_num_elegido)
+    desvio_estimado=np.std(resultados_corrida)
     
-    varianza_estimada=np.var(resultado_num_elegido)
+    varianza_estimada=np.var(resultados_corrida)
     
     
     ####### GRAFICOS ##########
