@@ -1,10 +1,17 @@
 import random
 import matplotlib.pyplot as plt
 import numpy as np
-from sys import argv
-num_corridas = int(argv[1])
-cant_tiradas = int(argv[2])
-num_elegido = int(argv[3])
+import sys
+
+args = sys.argv[1:]
+
+if len(args) != 6 or args[0] != '-c' or args[2] != '-n' or args[4] != '-e':
+    print("Uso: python script.py -c <corridas> -t <tiradas> -n <numero>")
+    sys.exit(1)
+
+num_corridas = int(args[1])
+cant_tiradas = int(args[3])
+num_elegido = int(args[5])
 
 def tirar_ruleta():
     return random.randint(0, 36)
@@ -94,6 +101,6 @@ plt.xlabel('Número de tiradas')
 plt.ylabel('Varianza')
 plt.title(f'Varianza en {cant_tiradas} tiradas')
 plt.legend()
-plt.ylim(70,130)
+plt.ylim(70,180)
 plt.savefig("grafica_varianza.png")
 plt.show()
