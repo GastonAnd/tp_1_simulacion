@@ -11,3 +11,5 @@ pip install numpy
 python ruleta.py cantidad_corridas cantidad_tiradas numero_elegido
 
 Ejemplo: python ruleta.py 3 10000 12
+
+# ARCHIVO RULETA_1.2 (TP 1.2)
