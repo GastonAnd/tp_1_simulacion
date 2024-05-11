@@ -4,13 +4,13 @@ import numpy as np
 import sys
 args = sys.argv[1:]
 
-if len(args) != 8 or args[0] != '-c' or args[2] != '-n' or args[4] != '-e' or args[6] !='-m' :
+if len(args) !=8 or args[0] != '-c' or args[2] != '-n' or args[4] != '-a' or args[6] !='-m' :
     print("Uso: python script.py -c <corridas> -n <tiradas> -e <numero>")
     sys.exit(1)
 
 num_corridas = int(args[1])
 cant_tiradas = int(args[3])
-num_elegido = int(args[5])
+capital = (args[5])
 estrategia=(args[7])
 
 monto_inicial=5000
@@ -36,6 +36,8 @@ def martingala():
     for i in range(1,cant_tiradas+1):
         resultado=tirar_ruleta()
         contador_tirada+=1
+        monto-=apuesta
+        montoTotal.append(monto)
         if resultado in rojos:
             monto+=apuesta * 2
             ganancia += apuesta *2           
@@ -53,32 +55,118 @@ def martingala():
             if monto < apuesta:
                 print("quedaste seco",i)
                 break
-            else:
-                monto -=apuesta
-                montoTotal.append(monto)
-    print("Frecuencia",frecuencia)
+            
+                #monto -=apuesta
+                #montoTotal.append(monto)
+    print(montoTotal)
 
 def fibonacci():
-    ganancia = 0
     monto = monto_inicial
     apuesta = apuesta_gral
     fib_sequence = seq_fibonacci(cant_tiradas)
     tiradas_realizadas = 0
     fib_index=0
     contador_tirada=0
-
-    while tiradas_realizadas < cant_tiradas:
-        if monto < apuesta_gral:
-            print("No tienes suficiente dinero para seguir apostando.")
-            break
+    for _ in range(1,cant_tiradas+1):
         resultado = tirar_ruleta()
         tiradas_realizadas += 1
         contador_tirada+=1
-        if resultado in rojos:
-            monto += apuesta_gral * 2
-            ganancia += apuesta_gral * 2
-            print("Salio rojo en la tirada:", tiradas_realizadas, ", ganancia-->", ganancia)
+        if resultado in rojos :
+            monto += apuesta * 2
+            print("Salio rojo en la tirada:", tiradas_realizadas)
             print("Monto acumulado-->", monto)
+            fib_index = max(0, fib_index - 2)  # Retrocede dos pasos en la secuencia
+            frecuencia.append(contador_tirada)
+            contador_tirada=0
+            montoTotal.append(monto)
+        else:
+            apuesta = fib_sequence[min(fib_index + 1, len(fib_sequence) - 1)] * apuesta_gral
+            print("salio negro")
+            print("Apuesta:", apuesta)
+            monto -= apuesta
+            montoTotal.append(monto)
+            fib_index += 1  # Avanza al siguiente número en la secuencia
+            if monto < apuesta:
+                print("No tienes suficiente dinero para seguir apostando.")
+                break
+    print(montoTotal)  
+
+def dalembert():
+    monto = monto_inicial
+    apuesta = apuesta_gral
+    contador_tirada = 0
+    for i in range(1,cant_tiradas + 1):
+        resultado=tirar_ruleta()
+        contador_tirada+=1
+        if resultado in rojos:
+            monto+=apuesta * 2
+            print("Ganaste! Monto actual es:", monto,"jugando,",apuesta)
+            apuesta-=apuesta_gral
+            if apuesta < apuesta_gral:
+                apuesta=apuesta_gral
+            frecuencia.append(contador_tirada)
+            contador_tirada=0
+            montoTotal.append(monto)
+            
+        
+        else:
+            print("perdiste la apuesta jugando,",apuesta)
+            monto-=apuesta
+            print("tu monto ahora es",monto)
+            apuesta+=apuesta_gral 
+            montoTotal.append(monto)
+            if monto < apuesta_gral:
+                print("te quedaste sin dinsero")
+                break
+    print(montoTotal)
+"""def redbet():
+    monto=monto_inicial
+    apuestarojo=apuesta_gral
+    apuestanegro=10
+    for i in range(cant_tiradas):
+        resultado= tirar_ruleta()
+        if cant_tiradas==0:
+            if resultado in rojos:
+                """
+
+def martingala_infi():
+    ganancia=0
+    monto=monto_inicial
+    apuesta=apuesta_gral
+    contador_tirada=0
+    for i in range(1,cant_tiradas+1):
+        resultado=tirar_ruleta()
+        contador_tirada+=1
+        if resultado in rojos:
+            monto+=apuesta * 2
+            ganancia += apuesta *2           
+            apuesta=apuesta_gral
+            frecuencia.append(contador_tirada)
+            contador_tirada=0
+            montoTotal.append(monto)
+            print("salio rojo en la tirada:",i+1,",ganancia-->" ,ganancia)
+            print("monto acumulado-->",monto)
+        else:
+            apuesta *=2
+            monto -=apuesta
+            montoTotal.append(monto)
+    print(montoTotal)  
+
+def fibonacci_infi():
+    monto = monto_inicial
+    apuesta = apuesta_gral
+    fib_sequence = seq_fibonacci(cant_tiradas)
+    tiradas_realizadas = 0
+    fib_index=0
+    contador_tirada=0
+    for _ in range(1,cant_tiradas +1):
+        resultado = tirar_ruleta()
+        tiradas_realizadas += 1
+        contador_tirada+=1
+        if resultado in rojos :
+            monto += apuesta * 2
+            print("Salio rojo en la tirada:", tiradas_realizadas, "numero",resultado)
+            print("Monto -->", monto)
             fib_index = max(0, fib_index - 2)  # Retrocede dos pasos en la secuencia
             frecuencia.append(contador_tirada)
             contador_tirada=0
@@ -88,13 +176,11 @@ def fibonacci():
             apuesta = fib_sequence[min(fib_index + 1, len(fib_sequence) - 1)] * apuesta_gral
             print("salio negro")
             print("Apuesta:", apuesta)
-            monto -= apuesta
+            monto -= apuesta           
             montoTotal.append(monto)
             fib_index += 1  # Avanza al siguiente número en la secuencia
-    print(frecuencia)
-
-def dalembert():
-    ganancia = 0
+    print(montoTotal)  
+def dalembert_infi():
     monto = monto_inicial
     apuesta = apuesta_gral
     contador_tirada = 0
@@ -114,14 +200,10 @@ def dalembert():
             monto-=apuesta
             montoTotal.append(monto)
 
-            print("perdiste la apuesta jugando,",apuesta)
-            if monto < apuesta_gral:
-                print("te quedaste sin dinero")
-                break
-
     print(frecuencia)
+
 for i in range(num_corridas):
-    if estrategia =='m':
+    if estrategia =='m' and capital=='f':
         martingala()
         vu_MG, fr_MG=np.unique(frecuencia,return_counts=True)        
         plt.bar(vu_MG, fr_MG, color='blue')
@@ -134,13 +216,21 @@ for i in range(num_corridas):
         plt.axhline(y=monto_inicial, color='blue', linestyle='--')
         plt.show()
 
-
-
-
-    elif estrategia=='f' : 
+    elif estrategia=='f' and capital=='f' : 
         fibonacci()
         vu_FIB, fr_FIB=np.unique(frecuencia,return_counts=True)
-        promedio=np.mean(vu_FIB)        
+        plt.bar(vu_FIB, fr_FIB, color='blue')
+        plt.xlabel('Tiradas desde la última ganancia')
+        plt.ylabel('Frecuencia')
+        plt.title('Frecuencia de tiradas desde la última ganancia')
+        plt.show()
+        plt.plot(montoTotal,color='red')
+        plt.axhline(y=monto_inicial, color='blue', linestyle='--')
+        plt.savefig("grafica_flujo_caja.png")
+        plt.show()
+    elif estrategia=='f' and capital=='i' : 
+        fibonacci_infi()
+        vu_FIB, fr_FIB=np.unique(frecuencia,return_counts=True)
         plt.bar(vu_FIB, fr_FIB, color='blue')
         plt.xlabel('Tiradas desde la última ganancia')
         plt.ylabel('Frecuencia')
@@ -149,15 +239,38 @@ for i in range(num_corridas):
         plt.plot(montoTotal,color='red')
         plt.axhline(y=monto_inicial, color='blue', linestyle='--')
         plt.show()
-    elif estrategia=='d':
+    elif estrategia=='d' and capital=='f':
         dalembert()
         vu_DAL,fr_DAL=np.unique(frecuencia,return_counts=True)
-        promedio=np.mean(vu_DAL)
         plt.bar(vu_DAL,fr_DAL,color='blue')
         plt.xlabel('Tiradas desde la última ganancia')
         plt.ylabel('Frecuencia')
         plt.title('Frecuencia de tiradas desde la última ganancia')
         plt.show()
+        plt.plot(montoTotal,color='red')
+
+        plt.axhline(y=monto_inicial, color='blue', linestyle='--')
+        plt.show()
+    elif estrategia=='d' and capital=='i':
+        dalembert_infi()
+        vu_DAL,fr_DAL=np.unique(frecuencia,return_counts=True)
+        plt.bar(vu_DAL,fr_DAL,color='blue')
+        plt.xlabel('Tiradas desde la última ganancia')
+        plt.ylabel('Frecuencia')
+        plt.title('Frecuencia de tiradas desde la última ganancia')
+        plt.show()
+        plt.plot(montoTotal,color='red')
+        plt.axhline(y=monto_inicial, color='blue', linestyle='--')
+        plt.show()
+    elif estrategia == 'm' and capital =='i':
+        martingala_infi()
+        vu_MG, fr_MG=np.unique(frecuencia,return_counts=True)        
+        plt.bar(vu_MG, fr_MG, color='blue')
+        plt.xlabel('Tiradas desde la última ganancia')
+        plt.ylabel('Frecuencia')
+        plt.title('Frecuencia de tiradas desde la última ganancia')
+        plt.show()
+
         plt.plot(montoTotal,color='red')
         plt.axhline(y=monto_inicial, color='blue', linestyle='--')
         plt.show()
