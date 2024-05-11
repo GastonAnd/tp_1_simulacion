@@ -36,8 +36,6 @@ def martingala():
     for i in range(1,cant_tiradas+1):
         resultado=tirar_ruleta()
         contador_tirada+=1
-        monto-=apuesta
-        montoTotal.append(monto)
         if resultado in rojos:
             monto+=apuesta * 2
             ganancia += apuesta *2           
@@ -52,12 +50,11 @@ def martingala():
             apuesta *=2
             print("salio negro")
             print("apuesta doble",apuesta)
+            monto -=apuesta
+            montoTotal.append(monto)            
             if monto < apuesta:
                 print("quedaste seco",i)
                 break
-            
-                #monto -=apuesta
-                #montoTotal.append(monto)
     print(montoTotal)
 
 def fibonacci():
@@ -108,12 +105,11 @@ def dalembert():
             contador_tirada=0
             montoTotal.append(monto)
             
-        
         else:
             print("perdiste la apuesta jugando,",apuesta)
+            apuesta+=apuesta_gral 
             monto-=apuesta
             print("tu monto ahora es",monto)
-            apuesta+=apuesta_gral 
             montoTotal.append(monto)
             if monto < apuesta_gral:
                 print("te quedaste sin dinsero")
@@ -159,27 +155,26 @@ def fibonacci_infi():
     tiradas_realizadas = 0
     fib_index=0
     contador_tirada=0
-    for _ in range(1,cant_tiradas +1):
+    for _ in range(1,cant_tiradas+1):
         resultado = tirar_ruleta()
         tiradas_realizadas += 1
         contador_tirada+=1
         if resultado in rojos :
             monto += apuesta * 2
-            print("Salio rojo en la tirada:", tiradas_realizadas, "numero",resultado)
-            print("Monto -->", monto)
+            print("Salio rojo en la tirada:", tiradas_realizadas)
+            print("Monto acumulado-->", monto)
             fib_index = max(0, fib_index - 2)  # Retrocede dos pasos en la secuencia
             frecuencia.append(contador_tirada)
             contador_tirada=0
             montoTotal.append(monto)
-
         else:
             apuesta = fib_sequence[min(fib_index + 1, len(fib_sequence) - 1)] * apuesta_gral
             print("salio negro")
             print("Apuesta:", apuesta)
-            monto -= apuesta           
+            monto -= apuesta
             montoTotal.append(monto)
             fib_index += 1  # Avanza al siguiente número en la secuencia
-    print(montoTotal)  
+    print(montoTotal)    
 def dalembert_infi():
     monto = monto_inicial
     apuesta = apuesta_gral
@@ -190,17 +185,22 @@ def dalembert_infi():
         if resultado in rojos:
             monto+=apuesta * 2
             apuesta-=apuesta_gral
+            if apuesta < apuesta_gral:
+                apuesta=apuesta_gral
             frecuencia.append(contador_tirada)
             contador_tirada=0
             montoTotal.append(monto)
             print("Ganaste! Monto actual es:", monto)
+            print("Tu proxima apuesta es",apuesta)
         
         else:
             apuesta+=apuesta_gral
             monto-=apuesta
+            print("Perdiste,tu proxima apuesta es",apuesta)
             montoTotal.append(monto)
 
     print(frecuencia)
+    print(montoTotal)
 
 for i in range(num_corridas):
     if estrategia =='m' and capital=='f':
