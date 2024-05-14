@@ -95,7 +95,7 @@ def dalembert():
                 break
 def labouchere():
     monto = monto_inicial
-    secuencia_inicial = [50,50,50]  # Secuencia inicial de Labouchere, puedes cambiarla
+    secuencia_inicial = [50,50,50]  # Secuencia inicial de Labouchere, se puede cambiar
     secuencia = secuencia_inicial.copy()
     frecuencia = []
     montoTotal = []
