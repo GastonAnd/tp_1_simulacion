@@ -26,6 +26,14 @@ def seq_fibonacci(n):
         fib_sequence.append(next_fib)
     return fib_sequence
 
+
+nombres_estrategia={
+'m':'Martingala',
+'f':'Fibonacci',
+'d':'Dalembert',
+'l':'Labouchere'
+}
+
 def martingala():
     monto=monto_inicial
     apuesta=apuesta_gral
@@ -207,18 +215,19 @@ def labouchere_infi():
         montoTotal.append(monto)
     return montoTotal, frecuencia
 
-def plot_flujo_caja(montoTotalCorrida,title,filename):
+def plot_flujo_caja(montoTotalCorrida,filename,estrategia):
     for i, montoTotal in enumerate(montoTotalCorrida):
         plt.plot(montoTotal,label=f'Flujo de Caja en corrida {i +1}')
     plt.xlabel('Numero de Tiradas')
     plt.ylabel('Cantidad de Capital')
-    plt.title(title)
+    nombre_estrategia=nombres_estrategia.get(estrategia,estrategia)
+    plt.title(f'Flujo de caja estrategia:{nombre_estrategia}')
     plt.axhline(y=monto_inicial, color='blue', linestyle='--',label='Flujo de Caja Inicial')
     plt.legend()
     plt.savefig(filename)
     plt.show()
 
-def plot_frecuencia_relativa(frecuencia,tiradas,corrida):
+def plot_frecuencia_relativa(frecuencia,tiradas,corrida,estrategia):
     vu, fr=np.unique(frecuencia,return_counts=True)   
     frec_rel=[]    
     for i in range(0,len(fr)):
@@ -227,10 +236,11 @@ def plot_frecuencia_relativa(frecuencia,tiradas,corrida):
     plt.xlabel('Numero de Tiradas')
     plt.ylabel('Frecuencia Relativa')
     plt.ylim(0,0.25)
-    plt.title('Frecuencia relativa de obtener apuesta favorable')
-    plt.savefig(f'grafica_frecuencia_relativa_estrategia_{estrategia}_capita_{capital}_corrida_{corrida}.png')        
+    nombre_estrategia=nombres_estrategia.get(estrategia,estrategia)
+    plt.title(f'Frecuencia relativa de obtener apuesta favorable en la corrida {corrida}-Estrategia:{nombre_estrategia}')
+    plt.savefig(f'grafica_frecuencia_relativa_estrategia_{nombre_estrategia}_capita_{capital}_corrida_{corrida}.png')        
     plt.show()
-def plot_frecuencia_relativa_infi(frecuencia,corrida):
+def plot_frecuencia_relativa_infi(frecuencia,corrida,estrategia):
     vu, fr=np.unique(frecuencia,return_counts=True)   
     frec_rel=[]    
     for i in range(0,len(fr)):
@@ -238,9 +248,10 @@ def plot_frecuencia_relativa_infi(frecuencia,corrida):
     plt.bar(vu, frec_rel, color='blue')
     plt.xlabel('Numero de Tiradas')
     plt.ylabel('Frecuencia Relativa')
-    plt.ylim(0,0.25)
-    plt.title('Frecuencia relativa de obtener apuesta favorable')
-    plt.savefig(f'grafica_frecuencia_relativa_estrategia_{estrategia}_capital_{capital}_corrida_{corrida}.png')        
+    plt.ylim(0,0.30)
+    nombre_estrategia=nombres_estrategia.get(estrategia,estrategia)
+    plt.title(f'Frecuencia relativa de obtener apuesta favorable en la corrida {corrida}-Estrategia:{nombre_estrategia}')
+    plt.savefig(f'grafica_frecuencia_relativa_estrategia_{nombre_estrategia}_capital_{capital}_corrida_{corrida}.png')        
     plt.show()    
 montoTotalCorrida=[]
 for corrida in range(1,num_corridas+1):
@@ -250,34 +261,34 @@ for corrida in range(1,num_corridas+1):
     if estrategia =='m' and capital=='f':
         martingala()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa(frecuencia,tiradas,corrida)
+        plot_frecuencia_relativa(frecuencia,tiradas,corrida,estrategia)
     elif estrategia=='f' and capital=='f' : 
         fibonacci()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa(frecuencia,tiradas,corrida)
+        plot_frecuencia_relativa(frecuencia,tiradas,corrida,estrategia)
     elif estrategia=='f' and capital=='i' : 
         fibonacci_infi()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa_infi(frecuencia,corrida)
+        plot_frecuencia_relativa_infi(frecuencia,corrida,estrategia)
     elif estrategia=='d' and capital=='f':
         dalembert()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa(frecuencia,tiradas,corrida)
+        plot_frecuencia_relativa(frecuencia,tiradas,corrida,estrategia)
     elif estrategia=='d' and capital=='i':
         dalembert_infi()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa_infi(frecuencia,corrida)
+        plot_frecuencia_relativa_infi(frecuencia,corrida,estrategia)
     elif estrategia == 'm' and capital =='i':
         martingala_infi()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa_infi(frecuencia,corrida)
+        plot_frecuencia_relativa_infi(frecuencia,corrida,estrategia)
     elif estrategia=='l' and capital=='f':
         montoTotal,frecuencia=labouchere()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa(frecuencia,tiradas,corrida)
+        plot_frecuencia_relativa(frecuencia,tiradas,corrida,estrategia)
     elif estrategia=='l' and capital=='i':
         montoTotal,frecuencia=labouchere_infi()
         montoTotalCorrida.append(montoTotal)
-        plot_frecuencia_relativa_infi(frecuencia,corrida)
+        plot_frecuencia_relativa_infi(frecuencia,corrida,estrategia)
 
-plot_flujo_caja(montoTotalCorrida,'Flujo de caja',f'flujo_caja_estrategia_{estrategia}_capital_{capital}')
+plot_flujo_caja(montoTotalCorrida,f'flujo_caja_estrategia_{estrategia}_capital_{capital}',estrategia)
