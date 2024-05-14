@@ -13,7 +13,6 @@ cant_tiradas = int(args[3])
 capital = (args[7])
 estrategia=(args[5])
 rojos = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
-negros = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
 monto_inicial=5000
 apuesta_gral=150
 tiradas=0
@@ -25,8 +24,6 @@ def seq_fibonacci(n):
         next_fib = fib_sequence[-1] + fib_sequence[-2]
         fib_sequence.append(next_fib)
     return fib_sequence
-
-
 nombres_estrategia={
 'm':'Martingala',
 'f':'Fibonacci',
@@ -103,7 +100,7 @@ def dalembert():
                 break
 def labouchere():
     monto = monto_inicial
-    secuencia_inicial = [50,50,50]  # Secuencia inicial de Labouchere, se puede cambiar
+    secuencia_inicial = [50,60,100,75,150,100]  # Secuencia inicial de Labouchere, se puede cambiar
     secuencia = secuencia_inicial.copy()
     frecuencia = []
     montoTotal = []
