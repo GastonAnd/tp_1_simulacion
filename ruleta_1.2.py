@@ -181,7 +181,7 @@ def dalembert_infi():
             apuesta+=apuesta_gral
 def labouchere_infi():
     monto = monto_inicial
-    secuencia_inicial = [50,50,50]  # Secuencia inicial de Labouchere, puedes cambiarla
+    secuencia_inicial = [1000,500,1500,700,800,500]  # Secuencia inicial de Labouchere, puedes cambiarla
     secuencia = secuencia_inicial.copy()
     frecuencia = []
     montoTotal = []
