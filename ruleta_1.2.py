@@ -221,7 +221,7 @@ def plot_flujo_caja(montoTotalCorrida,filename,estrategia):
     plt.xlabel('Numero de Tiradas')
     plt.ylabel('Cantidad de Capital')
     nombre_estrategia=nombres_estrategia.get(estrategia,estrategia)
-    plt.title(f'Flujo de caja estrategia:{nombre_estrategia}')
+    plt.title(f'Flujo de caja- Estrategia:{nombre_estrategia}')
     plt.axhline(y=monto_inicial, color='blue', linestyle='--',label='Flujo de Caja Inicial')
     plt.legend()
     plt.savefig(filename)
@@ -235,9 +235,8 @@ def plot_frecuencia_relativa(frecuencia,tiradas,corrida,estrategia):
     plt.bar(vu, frec_rel, color='blue')
     plt.xlabel('Numero de Tiradas')
     plt.ylabel('Frecuencia Relativa')
-    plt.ylim(0,0.25)
     nombre_estrategia=nombres_estrategia.get(estrategia,estrategia)
-    plt.title(f'Frecuencia relativa de obtener apuesta favorable en la corrida {corrida}-Estrategia:{nombre_estrategia}')
+    plt.title(f'Frecuencia relativa-Corrida:{corrida}-Estrategia:{nombre_estrategia}')
     plt.savefig(f'grafica_frecuencia_relativa_estrategia_{nombre_estrategia}_capita_{capital}_corrida_{corrida}.png')        
     plt.show()
 def plot_frecuencia_relativa_infi(frecuencia,corrida,estrategia):
@@ -250,7 +249,7 @@ def plot_frecuencia_relativa_infi(frecuencia,corrida,estrategia):
     plt.ylabel('Frecuencia Relativa')
     plt.ylim(0,0.30)
     nombre_estrategia=nombres_estrategia.get(estrategia,estrategia)
-    plt.title(f'Frecuencia relativa de obtener apuesta favorable en la corrida {corrida}-Estrategia:{nombre_estrategia}')
+    plt.title(f'Frecuencia relativa-Corrida:{corrida}-Estrategia:{nombre_estrategia}')
     plt.savefig(f'grafica_frecuencia_relativa_estrategia_{nombre_estrategia}_capital_{capital}_corrida_{corrida}.png')        
     plt.show()    
 montoTotalCorrida=[]
