@@ -52,9 +52,17 @@ def GeneradorRamdom(n=1,m=100, c=10): #Generacion de numeros aleatorios random (
 
 
 
-def Generador2(): #Generador de numeros pseudoaleatorios 2
+def MetododelCuadrado(seed=12345678,width=8,c=10): #Generador de metodo del cuadrado
     global randomNumList
-    print("Generador 2") 
+    current_value=seed
+    for _ in range(c):
+        squared=str(current_value **2).zfill(2 * width) #Eleva al cuadrado el valor actual
+        
+        start=(len(squared)-width) // 2     #Obtiene los numeros centrales
+        end = start + width
+        current_value = int(squared[start:end])
+
+        randomNumList.append(current_value)
 
 
 def Test1(): #Test 1
@@ -81,19 +89,20 @@ def doTest():
 def Menu():
     i = '0'
     while i != 'S':
-        print("╔═════════════════════════╗")
-        print("║          Menu           ║")
-        print("╠═══════╦═════════════════╣")
-        print("║ 'R'   ║ GeneradorRandom ║")
-        print("║ 'GCL' ║ GeneradorGCL    ║")
-        print("║ 'S'   ║     Salir       ║")
-        print("╚═══════╩═════════════════╝")
+        print("╔══════════════════════════════╗")
+        print("║             Menu             ║")
+        print("╠═══════╦══════════════════════╣")
+        print("║ 'R'   ║ GeneradorRandom      ║")
+        print("║ 'GCL' ║ GeneradorGCL         ║")
+        print("║ 'C'   ║ GeneradorCuadrado    ║")
+        print("║ 'S'   ║     Salir            ║")
+        print("╚═══════╩══════════════════════╝")
         i = input("Ingrese una opción: ")
 
         
         if(i=='R'): GeneradorRamdom()
         elif(i=='GCL'): GeneradorGCL()
-        
+        elif(i=='C'):MetododelCuadrado()
         if(i!='S'): 
             print(randomNumList)
             doTest()
