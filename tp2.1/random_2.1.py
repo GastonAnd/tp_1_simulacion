@@ -1,6 +1,6 @@
 import random
 import msvcrt
-
+import matplotlib.pyplot as plt
 randomNumList =[]
 
 
@@ -37,7 +37,7 @@ def GCL(seed, a=1664525, c=1013904223, m=2**32):
         yield seed
 
 
-def GeneradorGCL(semilla= 12345,c = 10): #Generador de numeros pseudoaleatorios 1
+def GeneradorGCL(semilla= 12345,c = 10000): #Generador de numeros pseudoaleatorios 1
     global randomNumList
     gen = GCL(semilla)
     randomNumList = [next(gen) for _ in range(c)]
@@ -52,7 +52,7 @@ def GeneradorRamdom(n=1,m=100, c=10): #Generacion de numeros aleatorios random (
 
 
 
-def MetododelCuadrado(seed=12345678,width=8,c=10): #Generador de metodo del cuadrado
+def MetododelCuadrado(seed=12345678,width=8,c=10000): #Generador de metodo del cuadrado
     global randomNumList
     current_value=seed
     for _ in range(c):
@@ -80,11 +80,33 @@ def Test4(): #Test 4
 
 
 def doTest():
-    Test1()
-    Test2()
-    Test3()
-    Test4()
+    PlotDispersión()
+    PlotHistograma()
 
+def PlotDispersión():
+    # Crear la gráfica de dispersión
+    plt.figure(figsize=(10, 6))
+    plt.scatter(range(len(randomNumList)), randomNumList, color='blue')
+
+# Etiquetas y título
+    plt.title('Gráfica de Dispersión de Números Generados')
+    plt.xlabel('Índice')
+    plt.ylabel('Valor Generado')
+
+# Mostrar la gráfica
+    plt.show()
+
+def PlotHistograma():
+
+    plt.figure(figsize=(10, 6))
+    plt.hist(randomNumList, bins=10, edgecolor='k', alpha=0.7)
+    
+    plt.title('Histograma de los Números Generados')
+    plt.xlabel('Valor')
+    plt.ylabel('Frecuencia')
+    plt.grid(True)
+    
+    plt.show()
 
 def Menu():
     i = '0'
