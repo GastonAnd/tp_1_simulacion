@@ -1,10 +1,8 @@
 import random
 import msvcrt
 import matplotlib.pyplot as plt
+from scipy.stats import kstest
 randomNumList =[]
-
-
-
 
 """
 Generador GCL: (semilla= primer valor, c= cantidad de valores a generar)
@@ -30,32 +28,35 @@ GCL:
     Salida
     
 """
-
-def GCL(seed, a=1664525, c=1013904223, m=2**32): 
+"""
+Se estuvieron modificando los distintos valores de cada generador para probar,
+habria que definir que valores usar
+"""
+def GCL(seed, a=134775813, c=1, m=2**32): 
     while True:
         seed = (a * seed + c) % m
         yield seed
 
 
-def GeneradorGCL(semilla= 12345,c = 10000): #Generador de numeros pseudoaleatorios 1
+def GeneradorGCL(semilla= 973160574,c = 100000): #Generador de numeros pseudoaleatorios 1
     global randomNumList
     gen = GCL(semilla)
     randomNumList = [next(gen) for _ in range(c)]
     
 
     
-def GeneradorRamdom(n=1,m=100, c=10): #Generacion de numeros aleatorios random (de n a m y la cantidad es c)
+def GeneradorRamdom(n=1,m=2**32, c=50000): #Generacion de numeros aleatorios random (de n a m y la cantidad es c)
     global randomNumList
     for i in range(c):
-        n =random.randint(n, m)
-        randomNumList.append(n)
+        j =random.randint(n, m)
+        randomNumList.append(j)
 
 
 
-def MetododelCuadrado(seed=12345678,width=8,c=10000): #Generador de metodo del cuadrado
+def MetododelCuadrado(seed=875302,width=6,c=1000000): #Generador de metodo del cuadrado
     global randomNumList
     current_value=seed
-    for _ in range(c):
+    for _ in range(c): 
         squared=str(current_value **2).zfill(2 * width) #Eleva al cuadrado el valor actual
         
         start=(len(squared)-width) // 2     #Obtiene los numeros centrales
@@ -65,8 +66,12 @@ def MetododelCuadrado(seed=12345678,width=8,c=10000): #Generador de metodo del c
         randomNumList.append(current_value)
 
 
-def Test1(): #Test 1
-    print("Test 1")
+def kol_smir_test(): #Kolmogorov smirnov test      d_stat=Estadístico D, p_value=Valor P
+    d_stat, p_value = kstest(randomNumList,'uniform',
+                             args=(min(randomNumList),
+                             max(randomNumList)-min(randomNumList)))
+    return d_stat,p_value
+    
 
 def Test2(): #Test 2
     print("Test 2")
@@ -78,15 +83,24 @@ def Test4(): #Test 4
     print("Test 4")
 
 
+def aprobtest(stat,value): #Temporal para un solo test, modificar para que todos se evaluan segun su resultado
+    print(f"Kolmogorov-Smirnov Test:\nD-statistic = {stat}\np-value = {value}")
+    if value < 0.05:
+        print("Los números generados no parecen seguir una distribución uniforme (rechazo de la hipótesis nula).")
+    else:
+        print("Los números generados parecen seguir una distribución uniforme (no rechazo de la hipótesis nula).")
+
 
 def doTest():
+    d_stat ,p_value = kol_smir_test()
+    aprobtest(d_stat,p_value)
     PlotDispersión()
     PlotHistograma()
 
 def PlotDispersión():
     # Crear la gráfica de dispersión
     plt.figure(figsize=(10, 6))
-    plt.scatter(range(len(randomNumList)), randomNumList, color='blue')
+    plt.scatter(range(len(randomNumList)), randomNumList,s=0.5,color='black')
 
 # Etiquetas y título
     plt.title('Gráfica de Dispersión de Números Generados')
@@ -99,7 +113,7 @@ def PlotDispersión():
 def PlotHistograma():
 
     plt.figure(figsize=(10, 6))
-    plt.hist(randomNumList, bins=10, edgecolor='k', alpha=0.7)
+    plt.hist(randomNumList, bins=20, edgecolor='k', alpha=0.7)
     
     plt.title('Histograma de los Números Generados')
     plt.xlabel('Valor')
@@ -126,7 +140,7 @@ def Menu():
         elif(i=='GCL'): GeneradorGCL()
         elif(i=='C'):MetododelCuadrado()
         if(i!='S'): 
-            print(randomNumList)
+            #print(randomNumList)
             doTest()
             print("Presione cualquier tecla para continuar...")
             msvcrt.getch()
