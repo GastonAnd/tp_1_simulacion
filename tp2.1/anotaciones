@@ -1,0 +1,28 @@
+"""
+Generador GCL: (semilla= primer valor, c= cantidad de valores a generar)
+Genera los numeros seudoaleatorios
+
+
+GCL:
+    X(n+1) = (aXn + c) mod(m)
+    
+    m>0
+    multiplicador 0<=a<m
+    incremento c<=m
+    Semilla 0<=X0<m
+    
+    X es la secuencia de números pseudoaleatorios.
+    a es el multiplicador. (Encontrado empíricamente para proporcionar buenas propiedades estadísticas cuando se usa con un módulo m)
+    c es el incremento. (Se elige de manera que sea impar y no tenga factores en común con m)
+    𝑚 es el módulo.  (Rango de numeros que genera)
+    X0 es la semilla inicial.
+
+    Inicio
+    Transicion
+    Salida
+    
+"""
+"""
+Se estuvieron modificando los distintos valores de cada generador para probar,
+habria que definir que valores usar
+"""

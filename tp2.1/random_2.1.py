@@ -1,37 +1,11 @@
 import random
 import msvcrt
+import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import kstest
 randomNumList =[]
 
-"""
-Generador GCL: (semilla= primer valor, c= cantidad de valores a generar)
-Genera los numeros seudoaleatorios
 
-
-GCL:
-    X(n+1) = (aXn + c) mod(m)
-    
-    m>0
-    multiplicador 0<=a<m
-    incremento c<=m
-    Semilla 0<=X0<m
-    
-    X es la secuencia de números pseudoaleatorios.
-    a es el multiplicador. (Encontrado empíricamente para proporcionar buenas propiedades estadísticas cuando se usa con un módulo m)
-    c es el incremento. (Se elige de manera que sea impar y no tenga factores en común con m)
-    𝑚 es el módulo.  (Rango de numeros que genera)
-    X0 es la semilla inicial.
-
-    Inicio
-    Transicion
-    Salida
-    
-"""
-"""
-Se estuvieron modificando los distintos valores de cada generador para probar,
-habria que definir que valores usar
-"""
 def GCL(seed, a=134775813, c=1, m=2**32): 
     while True:
         seed = (a * seed + c) % m
@@ -72,9 +46,15 @@ def kol_smir_test(): #Kolmogorov smirnov test      d_stat=Estadístico D, p_valu
                              max(randomNumList)-min(randomNumList)))
     return d_stat,p_value
     
+def monobit_test(bits): #Test 2 : test de monobit--> Esta prueba verifica si hay una distribucion equitativa de 1 y 0 en un conjun to de bits.
+    ones_count = np.sum(bits == '1')
+    zeros_count = len(bits) - ones_count
+    expected_count = len(bits) / 2
+    return abs(ones_count - expected_count) / expected_count
 
-def Test2(): #Test 2
-    print("Test 2")
+def convert_to_bits(numbers):
+    return ''.join(format(num, '032b') for num in numbers)
+
 
 def Test3(): #Test 3
     print("Test 3")
@@ -92,6 +72,13 @@ def aprobtest(stat,value): #Temporal para un solo test, modificar para que todos
 
 
 def doTest():
+     # Convertir los números generados en una cadena de bits
+    bits_string = convert_to_bits(randomNumList)
+    
+    # Realizar la prueba del monobit
+    result = monobit_test(bits_string)
+    print(f"Resultado Monobit: {result}")
+
     d_stat ,p_value = kol_smir_test()
     aprobtest(d_stat,p_value)
     PlotDispersión()
