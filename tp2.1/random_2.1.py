@@ -56,11 +56,57 @@ def convert_to_bits(numbers):
     return ''.join(format(num, '032b') for num in numbers)
 
 
-def Test3(): #Test 3
-    print("Test 3")
 
-def Test4(): #Test 4
-    print("Test 4")
+
+
+
+def frequency_test_block(bits, block_size=8):
+    
+    num_blocks = len(bits) // block_size
+    block_counts = [bits[i*block_size:(i+1)*block_size].count('1') for i in range(num_blocks)]
+    
+    
+    block_proportions = [count / block_size for count in block_counts]
+    expected_proportion = 0.5
+    
+    
+    chi_square = sum(((proportion - expected_proportion) ** 2) / expected_proportion for proportion in block_proportions)
+    
+    return chi_square
+
+def runs_test(bits):
+    
+    n = len(bits)
+    runs = 1
+    for i in range(1, n):
+        if bits[i] != bits[i-1]:
+            runs += 1
+    
+    
+    expected_runs = ((2 * n) - 1) / 3
+    variance_runs = ((16 * n) - 29) / 90
+    
+    
+    z = (runs - expected_runs) / np.sqrt(variance_runs)
+    
+    return z
+
+
+
+
+def doSimpleTests():
+    bits_string = convert_to_bits(randomNumList)
+    block_size = 8
+    chi_square = frequency_test_block(bits_string, block_size)
+    print(f"Frequency Test: Block (Tamaño del bloque = {block_size}): {chi_square}")
+    z = runs_test(bits_string)
+    print(f"Runs Test: z = {z}")
+
+
+
+
+
+
 
 
 def aprobtest(stat,value): #Temporal para un solo test, modificar para que todos se evaluan segun su resultado
@@ -81,6 +127,9 @@ def doTest():
 
     d_stat ,p_value = kol_smir_test()
     aprobtest(d_stat,p_value)
+
+    doSimpleTests()
+
     PlotDispersión()
     PlotHistograma()
 
