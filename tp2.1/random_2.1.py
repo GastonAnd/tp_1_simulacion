@@ -49,8 +49,11 @@ def kol_smir_test(): #Kolmogorov smirnov test      d_stat=Estadístico D, p_valu
 def monobit_test(bits): #Test 2 : test de monobit--> Esta prueba verifica si hay una distribucion equitativa de 1 y 0 en un conjun to de bits.
     ones_count = np.sum(bits == '1')
     zeros_count = len(bits) - ones_count
-    expected_count = len(bits) / 2
-    return abs(ones_count - expected_count) / expected_count
+    expected_count = len(bits) / 2.0
+    if expected_count == 0:
+        return float('inf')  # Retornar infinito si expected_count es cero para indicar un resultado extremo
+    else:
+        return abs(ones_count - expected_count) / expected_count
 
 def convert_to_bits(numbers):
     return ''.join(format(num, '032b') for num in numbers)
