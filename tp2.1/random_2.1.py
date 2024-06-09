@@ -107,11 +107,6 @@ def doSimpleTests():
 
 
 
-
-
-
-
-
 def aprobtest(stat,value): #Temporal para un solo test, modificar para que todos se evaluan segun su resultado
     print(f"Kolmogorov-Smirnov Test:\nD-statistic = {stat}\np-value = {value}")
     if value < 0.05:
